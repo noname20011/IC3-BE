@@ -1,0 +1,36 @@
+package domain.system_study_api.repository;
+
+import domain.system_study_api.dto.quiz_result.TopStudentDTO;
+import domain.system_study_api.entity.QuizResult;
+import domain.system_study_api.helper.base.repository.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> {
+
+    // Tìm tất cả kết quả của một học sinh
+    List<QuizResult> findByStudentIdOrderByCreatedAtDesc(UUID studentId);
+
+    // Lấy danh sách kết quả cao nhất của một lớp để làm Leaderboard
+    @Query("SELECT r FROM QuizResult r WHERE r.student.classroom.id = :classId " +
+            "AND r.part.id = :partId ORDER BY r.score DESC, r.timeSpent ASC")
+    List<QuizResult> findLeaderboardByClassAndPart(UUID classId, UUID partId);
+
+    // Lấy danh sách kết quả cao nhất của một lớp để làm Leaderboard
+    @Query("SELECT r FROM QuizResult r WHERE r.part.id = :partId ORDER BY r.score DESC, r.timeSpent ASC")
+    List<QuizResult> findLeaderboardByPart(UUID partId);
+
+    @Query(value = "SELECT * FROM ( SELECT qr.score, qr.time_spent, l.name as level_name, \n" +
+                   "st.first_name, st.last_name, cl.class_name, sc.school_name, ROW_NUMBER() OVER \n" +
+                   "(PARTITION BY p.level_id ORDER BY qr.score DESC, qr.time_spent ASC) as rn \n" +
+                   "FROM tbl_quiz_result qr \n" +
+                   "JOIN tbl_part p ON qr.part_id = p.id \n" +
+                   "JOIN tbl_level l ON p.level_id = l.id \n" +
+                   "JOIN tbl_student st ON qr.student_id = st.id \n" +
+                   "JOIN tbl_classroom cl on cl.id = st.classroom_id\n" +
+                   "JOIN tbl_school sc on sc.id = cl.school_id) as ranked_results WHERE rn = 1;\n",
+            nativeQuery = true)
+    List<TopStudentDTO> findTopStudentForEachLevel();
+}
