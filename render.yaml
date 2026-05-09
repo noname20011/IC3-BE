@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: 'Deploy to Render'
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    healthCheckPath: /
-    plan: free
-    branch: main
