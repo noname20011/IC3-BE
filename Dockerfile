@@ -11,7 +11,7 @@ RUN ./mvnw clean package -DskipTests
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 # Chỉ copy file JAR từ giai đoạn build sang
-COPY --from=build /app/target/study-system-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
-CMD ["java","-Xmx300m", "-jar", "appjar"]
+CMD ["java","-Xmx300m", "-jar", "app.jar"]
