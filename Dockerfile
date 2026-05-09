@@ -14,4 +14,5 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
+
 CMD ["java","-Xmx300m", "-jar", "app.jar"]
