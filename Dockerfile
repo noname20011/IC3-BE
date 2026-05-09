@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim as build
+FROM eclipse-temurin:17-jdk as build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Giai đoạn 2: Tạo Image chạy app (siêu nhẹ)
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 # Chỉ copy file JAR từ giai đoạn build sang
 COPY --from=build /app/target/study-system-0.0.1-SNAPSHOT.jar app.jar
