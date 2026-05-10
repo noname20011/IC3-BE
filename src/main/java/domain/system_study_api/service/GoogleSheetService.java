@@ -76,7 +76,7 @@ public class GoogleSheetService {
             int colIndex = result.getPart().getSortOrder() + 3;
             String scoreCol = getColumnLetter(colIndex);
 
-            String range = String.format("%s!%s%d", classroom.getClassName(), scoreCol, rowIndex);
+            String range = String.format("%s!%s%d", classroom.getName(), scoreCol, rowIndex);
 
             // Dùng USER_ENTERED để Google Sheet hiểu đây là số, không phải text
             ValueRange body = new ValueRange().setValues(List.of(List.of(result.getScore())));
@@ -86,7 +86,7 @@ public class GoogleSheetService {
                     .execute();
 
             log.info("Record score successfully: StudentName {}, Class {}, Column {}, Row {}",
-                    student.getFirstName(), classroom.getClassName(), scoreCol, rowIndex);
+                    student.getFirstName(), classroom.getName(), scoreCol, rowIndex);
 
         } catch (Exception e) {
             log.error("Execute fail at GoogleSheetService: ", e);

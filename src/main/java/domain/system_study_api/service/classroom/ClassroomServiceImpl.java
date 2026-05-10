@@ -45,12 +45,12 @@ public class ClassroomServiceImpl implements ClassroomService {
         // 2. Lấy danh sách lớp hiện có trong DB (Danh sách B)
         List<Classroom> existingClassesInDb = classroomRepository.findBySchoolId(schoolId);
         List<String> existingClassNamesInDb = existingClassesInDb.stream()
-                .map(Classroom::getClassName)
+                .map(Classroom::getName)
                 .toList();
 
         // --- XỬ LÝ XÓA (Delete if not in Sheet) ---
         List<Classroom> classesToDelete = existingClassesInDb.stream()
-                .filter(c -> !currentTabsOnSheet.contains(c.getClassName()))
+                .filter(c -> !currentTabsOnSheet.contains(c.getName()))
                 .toList();
 
         if (!classesToDelete.isEmpty()) {
@@ -62,7 +62,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         for (String tabName : currentTabsOnSheet) {
             if (!existingClassNamesInDb.contains(tabName)) {
                 Classroom newClass = new Classroom();
-                newClass.setClassName(tabName);
+                newClass.setName(tabName);
                 newClass.setSchool(school);
                 classroomRepository.save(newClass);
                 log.info("Đã thêm lớp mới: {}", tabName);
@@ -72,7 +72,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public List<ClassroomResponseDTO> getClassrooms(UUID schoolId) {
-        List<Classroom> data = classroomRepository.findBySchoolIdOrderByClassNameAsc(schoolId);
+        List<Classroom> data = classroomRepository.findBySchoolIdOrderByNameAsc(schoolId);
 
         return classroomMapper.mapToListResponseDtos(data);
     }

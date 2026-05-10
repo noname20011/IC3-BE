@@ -16,8 +16,8 @@ public interface StudentMapper extends BaseMapper<Student, StudentRequestDTO, St
 
 
     @Override
-    @Mapping(target = "fullName", expression = "java(student.getLastName() + \" \" + student.getFirstName())")
-    @Mapping(target = "className", source = "student.classroom.className")
-    @Mapping(target = "schoolName", source = "student.classroom.school.schoolName")
+    @Mapping(target = "name", expression = "java(student.getLastName() + \" \" + student.getFirstName())")
+    @Mapping(target = "className", source = "student.classroom.name")
+    @Mapping(target = "schoolName", source = "student.classroom.school.name")
     StudentResponseDTO mapToResponseDto(Student student);
 }

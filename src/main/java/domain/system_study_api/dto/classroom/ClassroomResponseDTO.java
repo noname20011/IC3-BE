@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ClassroomResponseDTO implements Serializable {
 
     private UUID id;
-    private String className;
+    private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class SchoolResponseDTO implements Serializable {
 
     private UUID id;
-    private String schoolName;
+    private String name;
     private String schoolCode;
     private String spreadsheetId;
     private LocalDateTime createdAt;

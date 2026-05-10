@@ -18,7 +18,7 @@ public class School extends BaseEntityHasId {
     @Column(unique = true, nullable = false)
     private String schoolCode;
 
-    private String schoolName;
+    private String name;
 
     @Column(nullable = false)
     private String spreadsheetId;

@@ -35,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
 
         String spreadsheetId = classroom.getSchool().getSpreadsheetId();
         // Vùng dữ liệu: TênTab!A2:C (STT, Họ, Tên)
-        String range = classroom.getClassName() + "!A2:C";
+        String range = classroom.getName() + "!A2:C";
 
         // 1. Đọc dữ liệu từ Google Sheet
         ValueRange response = sheetsService.spreadsheets().values()
@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
         List<List<Object>> rows = response.getValues();
 
         if (rows == null || rows.isEmpty()) {
-            log.warn("Tab {} không có dữ liệu học sinh", classroom.getClassName());
+            log.warn("Tab {} không có dữ liệu học sinh", classroom.getName());
             return;
         }
 

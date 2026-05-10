@@ -11,8 +11,8 @@ import java.util.UUID;
 @Repository
 public interface ClassroomRepository extends BaseRepository<Classroom, UUID> {
     // Kiểm tra lớp đã tồn tại trong trường chưa để tránh trùng
-    boolean existsBySchoolAndClassName(School school, String className);
+    boolean existsBySchoolAndName(School school, String className);
     List<Classroom> findBySchoolId(UUID schoolId);
 
-    List<Classroom> findBySchoolIdOrderByClassNameAsc(UUID schoolId);
+    List<Classroom> findBySchoolIdOrderByNameAsc(UUID schoolId);
 }

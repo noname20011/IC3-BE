@@ -1,18 +1,38 @@
-name: Deploy to Render
+name: CI/CD & Keep Alive for Render
 
 on:
+  # 1. Deploy khi có code mới
   push:
     branches:
-      - main # Chạy tự động mỗi khi bạn push code vào nhánh main
+      - main
+
+  # 2. Ping mỗi 14 phút trong khung giờ 7h - 22h VN
+  schedule:
+    # '*/14' : mỗi 14 phút
+    # '0-15' : từ 00:00 UTC (7h sáng VN) đến 15:59 UTC (gần 11h đêm VN)
+    - cron: '*/14 0-15 * * *'
+
+  # 3. Nút bấm chạy thủ công
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  render-tasks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Bước này dùng để "gọi" Render bắt đầu deploy
+      # Chỉ chạy khi Push code hoặc bấm nút thủ công
       - name: Deploy to Render
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
-          curl -f ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          echo "🚀 Đang kích hoạt Deploy trên Render..."
+          curl -f "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      # Chỉ chạy theo lịch trình (Cron)
+      - name: Ping Render App to Keep Alive
+        if: github.event_name == 'schedule'
+        run: |
+          echo "⏰ Đang Ping Render để giữ app thức (Khung giờ 7h-22h)..."
+          # THAY LINK DƯỚI ĐÂY BẰNG LINK THẬT CỦA BẠN
+          curl -s -I https://ten-app-cua-ban.onrender.com | grep "HTTP/"
