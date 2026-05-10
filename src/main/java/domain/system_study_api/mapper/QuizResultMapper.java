@@ -14,8 +14,8 @@ public interface QuizResultMapper extends BaseMapper<QuizResult, QuizResultReque
 
     @Override
     @Mapping(target = "studentName", expression = "java(quizResult.getStudent().getLastName() + \" \" + quizResult.getStudent().getFirstName())")
-    @Mapping(target = "className", source = "quizResult.student.classroom.className")
-    @Mapping(target = "schoolName", source = "quizResult.student.classroom.school.schoolName")
+    @Mapping(target = "className", source = "quizResult.student.classroom.name")
+    @Mapping(target = "schoolName", source = "quizResult.student.classroom.school.name")
     @Mapping(target = "partName", source = "quizResult.part.name")
     @Mapping(target = "levelName", source = "quizResult.part.level.name")
     QuizResultResponseDTO mapToResponseDto(QuizResult quizResult);

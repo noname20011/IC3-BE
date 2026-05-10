@@ -17,7 +17,7 @@ import java.util.List;
 public class Classroom extends BaseEntityHasId {
 
     @Column(nullable = false)
-    private String className; // Ví dụ: "6a1", "6a2"
+    private String name; // Ví dụ: "6a1", "6a2"
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id",  nullable = false)

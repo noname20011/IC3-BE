@@ -1,6 +1,5 @@
 package domain.system_study_api.dto.student;
 
-import domain.system_study_api.entity.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class StudentResponseDTO implements Serializable {
 
     private UUID id;
     private Integer externalId;
-    private String fullName;
+    private String name;
     private String schoolName;
     private String className;
     private LocalDateTime createdAt;

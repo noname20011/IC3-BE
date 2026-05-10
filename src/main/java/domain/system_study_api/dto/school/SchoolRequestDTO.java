@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class SchoolRequestDTO implements Serializable {
 
     @NotBlank(message = "Field School Name must be not blank!")
-    private String schoolName;
+    private String name;
 
     @NotBlank(message = "Field School Code must be not blank!")
     private String schoolCode;
