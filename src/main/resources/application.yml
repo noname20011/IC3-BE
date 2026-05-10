@@ -29,4 +29,4 @@ spring:
       port: 6674
       host: localhost
 fe:
-  url: https://ic-3-production.vercel.app/
+  url: https://ic-3-production.vercel.app
