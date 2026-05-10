@@ -11,9 +11,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Value("${fe.url}")
-    private String feUrl;
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic"); // Kênh nhận dữ liệu cho Client
@@ -22,6 +19,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-leaderboard").setAllowedOrigins("https://ic-3-production.vercel.app", "http://localhost:3000").withSockJS();
+        registry.addEndpoint("/ws-leaderboard").setAllowedOrigins("*").withSockJS();
     }
 }
