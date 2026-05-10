@@ -16,7 +16,6 @@ import domain.system_study_api.repository.StudentRepository;
 import domain.system_study_api.repository.UserAccessExamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,17 +34,15 @@ public class AccessExamServiceImpl implements AccessExamService {
     private final PasswordExamRepository passwordRepository;
     private final UserAccessExamRepository userAccessRepository;
     private final DeviceRegistrationRepository deviceRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final PasswordExamMapper passwordExamMapper;
     private final StudentRepository sRepository;
 
     @Transactional
     @Override
     public void validateAccess(AccessExamClientRequestDTO request) {
-
         // 1. Kiểm tra Password tồn tại
         PasswordExam passExam = passwordRepository.findByPassword(request.getPasswordExam())
-                .orElseThrow(() -> new RuntimeException("Password incorrect!"));
+                .orElseThrow(() -> new BusinessException("Password incorrect!"));
 
         // 2. Check Expiry (Ngày hết hạn)
         if (passExam.getExpireDate() != null && passExam.getExpireDate().isBefore(LocalDate.now())) {
@@ -59,7 +56,7 @@ public class AccessExamServiceImpl implements AccessExamService {
             // 4. Check  Secret Answer Question
             Optional<UserAccessExam> accessExam = userAccessRepository.findUserAccessExamByStudentId(request.getStudentId());
             if (accessExam.isPresent()) {
-                if (!passwordEncoder.matches(request.getSecretAnswer(), accessExam.get().getSecretAnswer())) {
+                if (!request.getSecretAnswer().equals(accessExam.get().getSecretAnswer())) {
                     throw new BusinessException("Câu hỏi bí mật không chính xác");
                 }
 
@@ -78,6 +75,9 @@ public class AccessExamServiceImpl implements AccessExamService {
     @Override
     public void createPasswordExam(PasswordExamRequestDTO dto) {
         PasswordExam pass = passwordExamMapper.mapToEntity(dto);
+//        String password = passwordEncoder.encode(pass.getPassword());
+
+//        pass.setPassword(password);
         pass.setStatus(PasswordStatus.ACTIVATING);
         passwordRepository.save(pass);
     }
@@ -88,7 +88,7 @@ public class AccessExamServiceImpl implements AccessExamService {
         UserAccessExam accessExam = userAccessRepository.findByIdOrThrow(userExamIdd);
         if (!request.getSecretAnswer().isEmpty()) {
             // Hash secret answer trước khi lưu
-            accessExam.setSecretAnswer(passwordEncoder.encode(request.getSecretAnswer()));
+//            accessExam.setSecretAnswer(passwordEncoder.encode(request.getSecretAnswer()));
             userAccessRepository.save(accessExam);
         }
     }
@@ -119,7 +119,7 @@ public class AccessExamServiceImpl implements AccessExamService {
         access.setPasswordExam(passExam);
         access.setStudent(student);
         // Hash secret answer trước khi lưu
-        access.setSecretAnswer(passwordEncoder.encode(request.getSecretAnswer()));
+//        access.setSecretAnswer(passwordEncoder.encode(request.getSecretAnswer()));
         access = userAccessRepository.save(access);
 
         // Save User's Device Registration
@@ -131,17 +131,6 @@ public class AccessExamServiceImpl implements AccessExamService {
     }
 
     private void checkFingerPrintExpired (String fingerprintId, UserAccessExam accessExam) {
-//        DeviceRegistration data = deviceRepository.findByUserAccessExamId(accessExamId);
-//        if(!data.getFingerprintId().equals(fingerprintId)) {
-//            if(LocalDateTime.now().isBefore(data.getNextSessionAt()) ) {
-//                throw new BusinessException("You dont access new device before at" + data.getNextSessionAt());
-//            } else {
-//                // update User's Fingerprinter Id
-//                data.setFingerprintId(fingerprintId);
-//                data.setNextSessionAt(LocalDateTime.now().plusHours(AppConstant.NEXT_SESSION_AT));
-//                deviceRepository.save(data);
-//            }
-//        }
 
         // Lấy device trực tiếp từ hồ sơ sinh viên
         DeviceRegistration data = accessExam.getDevice();

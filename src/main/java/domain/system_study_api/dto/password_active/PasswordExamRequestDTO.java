@@ -1,6 +1,7 @@
 package domain.system_study_api.dto.password_active;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class PasswordExamRequestDTO implements Serializable {
     @NotBlank(message = "Field password must be not blank!")
     private String password;
 
-    @NotBlank(message = "Field Expire Date must be not null!")
+    @NotNull(message = "Field Expire Date must be not null!")
     private LocalDate expireDate;
 
     private Boolean allowedAll;

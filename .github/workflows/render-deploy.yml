@@ -35,4 +35,4 @@ jobs:
         run: |
           echo "⏰ Đang Ping Render để giữ app thức (Khung giờ 7h-22h)..."
           # THAY LINK DƯỚI ĐÂY BẰNG LINK THẬT CỦA BẠN
-          curl -s -I https://ten-app-cua-ban.onrender.com | grep "HTTP/"
+#          curl -s -I https://my-spring-app-ic3.onrender.com/ | grep "HTTP/"
