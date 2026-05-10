@@ -26,4 +26,7 @@ public class QuizResultRequestDTO implements Serializable {
     @NotBlank(message = "Field Student Name must be not blank!")
     private UUID partId;
 
+    @NotBlank(message = "Field ClassId must be not blank!")
+    private UUID classId;
+
 }

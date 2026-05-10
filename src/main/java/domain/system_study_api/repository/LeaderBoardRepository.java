@@ -23,7 +23,7 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
     List<QuizResult> findLeaderboardByPart(UUID partId);
 
     @Query(value = "SELECT * FROM ( SELECT qr.score, qr.time_spent, l.name as level_name, \n" +
-                   "st.first_name, st.last_name, cl.class_name, sc.school_name, ROW_NUMBER() OVER \n" +
+                   "st.first_name, st.last_name, cl.name, sc.name, ROW_NUMBER() OVER \n" +
                    "(PARTITION BY p.level_id ORDER BY qr.score DESC, qr.time_spent ASC) as rn \n" +
                    "FROM tbl_quiz_result qr \n" +
                    "JOIN tbl_part p ON qr.part_id = p.id \n" +
@@ -33,4 +33,16 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
                    "JOIN tbl_school sc on sc.id = cl.school_id) as ranked_results WHERE rn = 1;\n",
             nativeQuery = true)
     List<TopStudentDTO> findTopStudentForEachLevel();
+
+    @Query("SELECT r.id as id, r.score as score, r.timeSpent as time_spent, " +
+            "s.firstName as first_name, s.lastName as last_name, c.name as class_name, " +
+            "sch.name as school_name, p.name as part_name, p.level.name as level_name " +
+            "FROM QuizResult r " +
+            "JOIN r.student s " +
+            "JOIN s.classroom c " +
+            "JOIN c.school sch " +
+            "JOIN r.part p " + // Lấy luôn Part để có sortOrder
+            "WHERE r.part.id = :partId and s.classroom.id = :classId " +
+            "ORDER BY r.score DESC, r.timeSpent ASC")
+    List<TopStudentDTO> findByClassIdAndPartId(UUID partId, UUID classId);
 }
