@@ -28,3 +28,5 @@ spring:
     redis:
       port: 6674
       host: localhost
+fe:
+  url: https://ic-3-production.vercel.app/
