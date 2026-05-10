@@ -7,11 +7,13 @@ import domain.system_study_api.helper.validators.uuid_validation.ValidUUID;
 import domain.system_study_api.service.access_exam.AccessExamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/access-exam")
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class AccessExamController {
 
     @PostMapping("/setup")
     public ResponseData<?> createPassword(@ModelAttribute @Valid PasswordExamRequestDTO dto) {
+        log.info(String.valueOf(dto));
         accessExamService.createPasswordExam(dto);
         return new ResponseData<>(HttpStatus.OK.value(), "Create Password Access successfully!");
     }

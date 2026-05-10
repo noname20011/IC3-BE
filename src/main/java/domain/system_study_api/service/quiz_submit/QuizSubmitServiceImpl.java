@@ -25,7 +25,6 @@ public class QuizSubmitServiceImpl implements QuizSubmitService {
 
     private final QuizSubmitRepository quizRepository;
     private final StudentRepository studentRepository;
-    private final GoogleSheetService googleSheetService;
     private final SimpMessagingTemplate messagingTemplate;
     private final PartRepository partRepository;
     private final QuizResultMapper quizResultMapper;

@@ -22,6 +22,4 @@ public class AccessExamClientRequestDTO implements Serializable {
 
     @ValidUUID(message = "Field Student Id dont match type!")
     private UUID studentId;
-
-    private UUID passwordExamId;
 }
