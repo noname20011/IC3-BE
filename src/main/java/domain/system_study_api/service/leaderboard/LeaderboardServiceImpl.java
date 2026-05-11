@@ -35,7 +35,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
 
     @Override
     public List<TopStudentDTO> getLeaderboardsByClassAndPart(UUID classId, UUID partId) {
-        return repository.findByClassIdAndPartId(classId, partId);
+        return repository.findByClassIdAndPartId(partId, classId);
     }
 
     @Override

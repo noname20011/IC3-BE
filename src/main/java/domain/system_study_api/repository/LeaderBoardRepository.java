@@ -4,6 +4,7 @@ import domain.system_study_api.dto.quiz_result.TopStudentDTO;
 import domain.system_study_api.entity.QuizResult;
 import domain.system_study_api.helper.base.repository.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,8 +42,12 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
             "JOIN r.student s " +
             "JOIN s.classroom c " +
             "JOIN c.school sch " +
-            "JOIN r.part p " + // Lấy luôn Part để có sortOrder
-            "WHERE r.part.id = :partId and s.classroom.id = :classId " +
+            "JOIN r.part p " +
+            "WHERE r.part.id = :partId " +
+            "AND s.classroom.id = :classId " +
             "ORDER BY r.score DESC, r.timeSpent ASC")
-    List<TopStudentDTO> findByClassIdAndPartId(UUID partId, UUID classId);
+    List<TopStudentDTO> findByClassIdAndPartId(
+            @Param("partId") UUID partId,
+            @Param("classId") UUID classId
+    );
 }
