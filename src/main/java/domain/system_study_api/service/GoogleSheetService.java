@@ -21,43 +21,6 @@ public class GoogleSheetService {
     private final Sheets sheetsService;
     private final QuizSubmitRepository quizResultRepository;
 
-//    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-//    @Async
-//    public void updateScoreOnSheetAsync(QuizResult result) {
-//        try {
-//            Student student = result.getStudent();
-//            Classroom classroom = student.getClassroom();
-//            String spreadsheetId = classroom.getSchool().getSpreadsheetId();
-//
-//            // Tìm dòng của học sinh dựa trên STT (externalId)
-//            // Vì Sheet bắt đầu từ dòng 2 (A2), dòng của học sinh sẽ là: STT + 1
-//            int rowIndex = student.getExternalId() + 3;
-//
-//            // OT 1: Điểm cột D (col 4),
-//            // OT 2: Điểm cột E (col 5),
-//            // OT 3: Điểm cột F (col 6),
-//            String scoreCol = getColumnLetter(result.getPart().getSortOrder() + 3);
-//
-//            String range = String.format("%s!%s%d",
-//                    classroom.getClassName(), scoreCol, rowIndex);
-//
-//            List<List<Object>> values = List.of(List.of(result.getScore()));
-//
-//            ValueRange body = new ValueRange().setValues(values);
-//            sheetsService.spreadsheets().values()
-//                    .update(spreadsheetId, range, body)
-//                    .setValueInputOption("USER_ENTERED") // Để format đúng kiểu số
-//                    .execute();
-//
-//            log.info("Ghi điểm thành công: Học sinh {}, Lớp {}, Cột {}, Dòng {}",
-//                    student.getFirstName(), classroom.getClassName(), scoreCol, rowIndex);
-//
-//        } catch (Exception e) {
-//            log.error("Lỗi khi ghi điểm lên Sheet: {}", e.getMessage());
-//        }
-//    }
-
-
     public void updateScoreOnSheetAsync(UUID resultId) {
         try {
             // Tìm lại kết quả trong Session mới của Thread Async
@@ -69,7 +32,7 @@ public class GoogleSheetService {
             Classroom classroom = student.getClassroom();
             String spreadsheetId = classroom.getSchool().getSpreadsheetId();
 
-            // Tính toán Row: STT 1 -> Dòng 4 (theo ảnh image_b74e38.png)
+            // Tính toán Row: STT 1 -> Dòng 4
             int rowIndex = student.getExternalId() + 3;
 
             // Tính toán Column: OT 1 (sortOrder 1) -> Cột D (4)
