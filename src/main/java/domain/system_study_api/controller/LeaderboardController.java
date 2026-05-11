@@ -35,10 +35,10 @@ public class LeaderboardController {
     }
 
     @GetMapping("/by-class/{classId}/part/{partId}")
-    public ResponseData<List<QuizResultResponseDTO>> getLeaderboardByClassAndPart(
+    public ResponseData<List<TopStudentDTO>> getLeaderboardByClassAndPart(
             @ValidUUID(message = "Id invalid uuid type!") @PathVariable UUID classId,
             @ValidUUID(message = "Id invalid uuid type!") @PathVariable UUID partId) {
-        List<QuizResultResponseDTO> responseDTO = leaderboardService.getLeaderboardsByClassAndPart(classId, partId);
+        List<TopStudentDTO> responseDTO = leaderboardService.getLeaderboardsByClassAndPart(classId, partId);
         return new ResponseData<>(HttpStatus.OK.value(), "Get leaderboard by class and part successfully!", responseDTO);
     }
 

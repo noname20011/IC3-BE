@@ -34,9 +34,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     }
 
     @Override
-    public List<QuizResultResponseDTO> getLeaderboardsByClassAndPart(UUID classId, UUID partId) {
-        List<QuizResult> data = repository.findLeaderboardByClassAndPart(classId, partId);
-        return leaderboardMapper.mapToListResponseDtos(data);
+    public List<TopStudentDTO> getLeaderboardsByClassAndPart(UUID classId, UUID partId) {
+        return repository.findByClassIdAndPartId(classId, partId);
     }
 
     @Override
