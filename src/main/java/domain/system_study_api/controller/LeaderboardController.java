@@ -6,6 +6,7 @@ import domain.system_study_api.dto.quiz_result.TopStudentDTO;
 import domain.system_study_api.helper.validators.uuid_validation.ValidUUID;
 import domain.system_study_api.service.leaderboard.LeaderboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +29,9 @@ public class LeaderboardController {
     }
 
     @GetMapping("/by-part/{partId}")
-    public ResponseData<List<TopStudentDTO>> getLeaderboardByPart(
+    public ResponseData<Page<TopStudentDTO>> getLeaderboardByPart(
             @ValidUUID(message = "Id invalid uuid type!") @PathVariable UUID partId) {
-        List<TopStudentDTO> responseDTO = leaderboardService.getLeaderboardsByPart(partId);
+        Page<TopStudentDTO> responseDTO = leaderboardService.getLeaderboardsByPart(partId);
         return new ResponseData<>(HttpStatus.OK.value(), "Get leaderboard by part successfully!", responseDTO);
     }
 
