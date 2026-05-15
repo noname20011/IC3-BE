@@ -13,5 +13,4 @@ public interface LeaderboardService {
     List<TopStudentDTO> getLeaderboardsByClassAndPart(UUID classId, UUID partId);
     List<TopStudentDTO> getLeaderboardsByPart(UUID partId);
 
-
 }

@@ -25,13 +25,13 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
         SELECT 
             r.id as id,
             r.score as score,
-            r.timeSpent as timeSpent,
-            s.firstName as firstName,
-            s.lastName as lastName,
-            c.name as className,
-            sch.name as schoolName,
-            p.name as partName,
-            p.level.name as levelName
+            r.timeSpent as time_spent,
+            s.firstName as first_name,
+            s.lastName as last_name,
+            c.name as class_name,
+            sch.name as school_name,
+            p.name as part_name,
+            p.level.name as level_name
         FROM QuizResult r
         JOIN r.student s
         JOIN s.classroom c
