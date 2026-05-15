@@ -53,10 +53,11 @@ public class QuizSubmitServiceImpl implements QuizSubmitService {
 
         // 2. Gửi tín hiệu WebSocket để update Leaderboard Realtime
         List<TopStudentDTO> leaderboardData = lbRepository.findByClassIdAndPartId(request.getPartId(), request.getClassId());
-        log.info("leaderboardData={}", leaderboardData);
+
         // Chúng ta gửi về topic của lớp đó để các bạn cùng lớp thấy ngay
         // 3. "Bắn" data qua WebSocket tới kênh /topic/leaderboard
-        messagingTemplate.convertAndSend("/topic/leaderboard", leaderboardData);
+        String destination = String.format("/topic/leaderboard/%s/%s", request.getClassId(), request.getPartId());
+        messagingTemplate.convertAndSend(destination, leaderboardData);
 
 
         // 4. Ghi lên Google Sheet (Chạy bất đồng bộ - Async)
