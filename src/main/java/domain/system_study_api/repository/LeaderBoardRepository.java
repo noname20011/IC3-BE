@@ -3,6 +3,7 @@ package domain.system_study_api.repository;
 import domain.system_study_api.dto.quiz_result.TopStudentDTO;
 import domain.system_study_api.entity.QuizResult;
 import domain.system_study_api.helper.base.repository.BaseRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,16 +32,20 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
             c.name as class_name,
             sch.name as school_name,
             p.name as part_name,
-            p.level.name as level_name
+            l.name as level_name
         FROM QuizResult r
         JOIN r.student s
         JOIN s.classroom c
         JOIN c.school sch
         JOIN r.part p
+        JOIN p.level l
         WHERE r.part.id = :partId
         ORDER BY r.score DESC, r.timeSpent ASC
     """)
-    List<TopStudentDTO> findTop20ByPartId( @Param("partId") UUID partId, Pageable pageable);
+    Page<TopStudentDTO> findTop20ByPartId(
+            @Param("partId") UUID partId,
+            Pageable pageable
+    );
 
     @Query(value = "SELECT * FROM ( SELECT qr.score, qr.time_spent, l.name as level_name, \n" +
                    "st.first_name, st.last_name, cl.name, sc.name, ROW_NUMBER() OVER \n" +
