@@ -11,7 +11,7 @@ public interface LeaderboardService {
     List<QuizResultResponseDTO> getStudentIdOrderByCreatedAtDesc(UUID studentId);
 
     List<TopStudentDTO> getLeaderboardsByClassAndPart(UUID classId, UUID partId);
-    List<QuizResultResponseDTO> getLeaderboardsByPart(UUID partId);
+    List<TopStudentDTO> getLeaderboardsByPart(UUID partId);
 
 
 }

@@ -7,6 +7,8 @@ import domain.system_study_api.mapper.QuizResultMapper;
 import domain.system_study_api.repository.LeaderBoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +41,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     }
 
     @Override
-    public List<QuizResultResponseDTO> getLeaderboardsByPart(UUID partId) {
-        List<QuizResult> data = repository.findLeaderboardByPart(partId);
-        return leaderboardMapper.mapToListResponseDtos(data);
+    public List<TopStudentDTO> getLeaderboardsByPart(UUID partId) {
+        Pageable top20 = PageRequest.of(0, 20);
+        return repository.findTop20ByPartId(partId, top20);
     }
 }

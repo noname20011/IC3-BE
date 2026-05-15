@@ -3,6 +3,7 @@ package domain.system_study_api.repository;
 import domain.system_study_api.dto.quiz_result.TopStudentDTO;
 import domain.system_study_api.entity.QuizResult;
 import domain.system_study_api.helper.base.repository.BaseRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,8 +21,26 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
     List<QuizResult> findLeaderboardByClassAndPart(UUID classId, UUID partId);
 
     // Lấy danh sách kết quả cao nhất của một lớp để làm Leaderboard
-    @Query("SELECT r FROM QuizResult r WHERE r.part.id = :partId ORDER BY r.score DESC, r.timeSpent ASC")
-    List<QuizResult> findLeaderboardByPart(UUID partId);
+    @Query("""
+        SELECT 
+            r.id as id,
+            r.score as score,
+            r.timeSpent as timeSpent,
+            s.firstName as firstName,
+            s.lastName as lastName,
+            c.name as className,
+            sch.name as schoolName,
+            p.name as partName,
+            p.level.name as levelName
+        FROM QuizResult r
+        JOIN r.student s
+        JOIN s.classroom c
+        JOIN c.school sch
+        JOIN r.part p
+        WHERE r.part.id = :partId
+        ORDER BY r.score DESC, r.timeSpent ASC
+    """)
+    List<TopStudentDTO> findTop20ByPartId( @Param("partId") UUID partId, Pageable pageable);
 
     @Query(value = "SELECT * FROM ( SELECT qr.score, qr.time_spent, l.name as level_name, \n" +
                    "st.first_name, st.last_name, cl.name, sc.name, ROW_NUMBER() OVER \n" +
