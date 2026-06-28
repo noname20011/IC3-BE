@@ -43,6 +43,13 @@ public class LeaderboardController {
         return new ResponseData<>(HttpStatus.OK.value(), "Get leaderboard by class and part successfully!", responseDTO);
     }
 
+    @GetMapping("/top-1/by-school/{schoolId}")
+    public ResponseData<List<TopStudentDTO>> getLeaderboardByClassAndPart(
+            @ValidUUID(message = "Id invalid uuid type!") @PathVariable UUID schoolId) {
+        List<TopStudentDTO> responseDTO = leaderboardService.getTop1EachPartBySchoolId(schoolId);
+        return new ResponseData<>(HttpStatus.OK.value(), "Get top 1 each part by school successfully!", responseDTO);
+    }
+
     @GetMapping("/by-student/{studentId}")
     public ResponseData<List<QuizResultResponseDTO>> getLeaderboardByStudent(
             @ValidUUID(message = "Id invalid uuid type!") @PathVariable UUID studentId) {

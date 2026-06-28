@@ -22,4 +22,10 @@ public class QuizSubmitController {
         QuizResultResponseDTO responseDTO = quizResultService.submitQuiz(quizResult);
         return new ResponseData<QuizResultResponseDTO>(HttpStatus.OK.value(), "Submitted Successfully", responseDTO);
     }
+
+    @PostMapping("/top-1-part")
+    public ResponseData<QuizResultResponseDTO> saveTop1(@RequestBody QuizResultRequestDTO quizResult) {
+        QuizResultResponseDTO responseDTO = quizResultService.quizSubmitTop1PartBySchool(quizResult);
+        return new ResponseData<QuizResultResponseDTO>(HttpStatus.OK.value(), "Submitted Top 1 Successfully", responseDTO);
+    }
 }
