@@ -5,5 +5,5 @@ import domain.system_study_api.dto.quiz_result.QuizResultResponseDTO;
 
 public interface QuizSubmitService {
     QuizResultResponseDTO submitQuiz(QuizResultRequestDTO request);
-
+    QuizResultResponseDTO quizSubmitTop1PartBySchool(QuizResultRequestDTO request);
 }

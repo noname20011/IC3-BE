@@ -46,4 +46,9 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         Pageable top20 = PageRequest.of(0, 20);
         return repository.findTop20ByPartId(partId, top20);
     }
+
+    @Override
+    public List<TopStudentDTO> getTop1EachPartBySchoolId(UUID schoolId) {
+        return repository.getTop1ForEachPartAndSchool(schoolId);
+    }
 }

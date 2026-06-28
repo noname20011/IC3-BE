@@ -59,6 +59,37 @@ public interface LeaderBoardRepository extends BaseRepository<QuizResult, UUID> 
             nativeQuery = true)
     List<TopStudentDTO> findTopStudentForEachLevel();
 
+    @Query(value = """
+    SELECT *
+    FROM (
+        SELECT
+            qr.score,
+            qr.time_spent,
+            l.name AS level_name,
+            st.first_name as first_name,
+            st.last_name as last_name,
+            cl.name AS class_name,
+            sc.name AS school_name,
+            p.name as part_name,
+            BIN_TO_UUID(p.id) AS part_id,
+            ROW_NUMBER() OVER (
+                PARTITION BY p.id
+                ORDER BY qr.score DESC, qr.time_spent ASC
+            ) AS rn
+        FROM tbl_quiz_result qr
+        JOIN tbl_part p ON qr.part_id = p.id
+        JOIN tbl_level l ON p.level_id = l.id
+        JOIN tbl_student st ON qr.student_id = st.id
+        JOIN tbl_classroom cl ON cl.id = st.classroom_id
+        JOIN tbl_school sc ON sc.id = cl.school_id
+        WHERE sc.id = :schoolId
+    ) ranked_results
+    WHERE rn = 1
+    """,
+            nativeQuery = true)
+    List<TopStudentDTO> getTop1ForEachPartAndSchool(@Param("schoolId") UUID schoolId);
+
+
     @Query("SELECT r.id as id, r.score as score, r.timeSpent as time_spent, " +
             "s.firstName as first_name, s.lastName as last_name, c.name as class_name, " +
             "sch.name as school_name, p.name as part_name, p.level.name as level_name " +

@@ -13,6 +13,7 @@ public interface TopStudentDTO {
     String getClass_name();
     String getSchool_name();
     String getPart_name();
+    UUID getPart_id();
 
     // Default method để gộp tên học sinh trực tiếp
     default String getStudentName() {
