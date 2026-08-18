@@ -93,13 +93,13 @@ public class QuizSubmitServiceImpl implements QuizSubmitService {
         // Chúng ta gửi về topic của lớp đó để các bạn cùng lớp thấy ngay
         // 3. "Bắn" messageNotify qua WebSocket tới kênh /topic/top-1-in-school
         String messageNotify = responseDTO.getStudentName() + "- lớp " + responseDTO.getClassName() +
-                "-\uD83C\uDF89 Đã cướp ngôi VUA" + "-IC3 " + responseDTO.getLevelName() + "–"
-                + responseDTO.getPartName() + "("  + responseDTO.getTimeSpent() + ")";
+                "- \uD83C\uDF89 Đã cướp ngôi VUA" + "- IC3 " + responseDTO.getLevelName() + " – "
+                + responseDTO.getPartName() + "("  + responseDTO.getTimeSpent() + "s)";
 
         Map<String, Object> response = new HashMap<>();
         response.put("data", leaderboardData);
         response.put("message", messageNotify);
-        String destination = String.format("/topic/top-1-in-school/%s/%s", schoolId, request.getPartId());
+        String destination = String.format("/topic/top-1-in-school/%s", schoolId);
         messagingTemplate.convertAndSend(destination, response);
 
 
